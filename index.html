@@ -110,7 +110,7 @@ body {
   const money=n=>"₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
   const safe=(v)=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const persist=()=>{localStorage.setItem(KEY_CART,JSON.stringify(cart));localStorage.setItem(KEY_SETTINGS,JSON.stringify(settings));localStorage.setItem(KEY_ORDERS,JSON.stringify(orders))};
-function fromDb(row) {
+function fromDb(row) {   return {     id: row.id,     name: row.name,     price: Number(row.price),     deliveryCharges: Number(row.delivery_charges ?? 0),     category: row.category || "Other",     emoji: row.emoji || "🛍️",     image: row.image_url || "",     description: row.description || ""   }; } {
   return {
     id: row.id,
     name: row.name,
@@ -122,7 +122,7 @@ function fromDb(row) {
     description: row.description || ""
   };
 }
- function toDb(p) {
+ function toDb(p) {   return {     id: p.id,     name: p.name,     price: p.price,     delivery_charges: p.deliveryCharges,     category: p.category,     emoji: p.emoji,     image_url: p.image || null,     description: p.description || "",     is_active: true   }; } {
   return {
     id: p.id,
     name: p.name,
