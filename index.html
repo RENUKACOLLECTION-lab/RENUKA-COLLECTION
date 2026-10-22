@@ -122,7 +122,7 @@ function fromDb(row) {
     description: row.description || ""
   };
 }
- function toDb(p) {   return {     id: p.id,     name: p.name,     price: p.price,     delivery_charges: p.deliveryCharges,     category: p.category,     emoji: p.emoji,     image_url: p.image || null,     description: p.description || "",     is_active: true   }; } {
+function toDb(p) {
   return {
     id: p.id,
     name: p.name,
@@ -259,7 +259,7 @@ function fromDb(row) {
   dropZone.addEventListener("drop",e=>handleImage(e.dataTransfer.files[0]));clearImageBtn.onclick=clearImage;
   $("productForm").addEventListener("submit",async e=>{
     e.preventDefault();if(!adminUnlocked||!db)return;
-    const oldId=$("editProductId").value;const p={id:oldId||("p-"+crypto.randomUUID()),name:$("pName").value.trim(),price:Number($("pPrice").value),deliveryCharges:Number($("pDeleverycharges").value),category:$("pCategory").value.trim(),emoji:$("pEmoji").value.trim()||"🛍️",image:$("pImage").value.trim(),description:$("pDescription").value.trim()};
+    const oldId=$("editProductId").value;const p={id:oldId||("p-"+crypto.randomUUID()),name:$("pName").value.trim(),price:Number($("pPrice").value),deliveryCharges:Number($("pDeliveryCharges").value),category:$("pCategory").value.trim(),emoji:$("pEmoji").value.trim()||"🛍️",image:$("pImage").value.trim(),description:$("pDescription").value.trim()};
     if(!p.name||!p.category||!Number.isFinite(p.price)||p.price<0||!Number.isFinite(p.deliveryCharges)||p.deliveryCharges<0){toast("Check product name, price and item delevery-charges.");return}
     if(p.image&&!/^https?:\/\//i.test(p.image)&&!/^data:image\/(jpeg|png|webp);base64,/i.test(p.image)){toast("Choose an image file or use an http/https image URL.");return}
     const button=$("saveProductBtn");button.disabled=true;button.textContent="Saving to cloud…";
