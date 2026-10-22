@@ -60,16 +60,18 @@ body {
     <hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
     <h3 id="productFormTitle">Add a product</h3><form id="productForm">
       <input type="hidden" id="editProductId">
-      <div class="admin-grid"><div class="field"><label for="pName">Product name *</label><input id="pName" required maxlength="80"></div><div class="field"><label for="pPrice">Price in ₹ *</label><input id="pPrice" type="number" required></div><div class="field"><label for="pDeliveryCharges">Delivery Charges (₹) *</label>
-<input
-  id="pDeliveryCharges"
-  type="number"
-  min="0"
-  step="0.01"
-  required
-  placeholder="Enter delivery charges in ₹"
->
-      </div><div class="field"><label for="pCategory">Category *</label><input id="pCategory" required maxlength="40" placeholder="Craft supplies"></div><div class="field"><label for="pEmoji">Emoji</label><input id="pEmoji" maxlength="8" placeholder="🧵"></div></div>
+      <div class="admin-grid"><div class="field"><label for="pName">Product name *</label><input id="pName" required maxlength="80"></div><div class="field"><label for="pPrice">Price in ₹ *</label><input id="pPrice" type="number" required></div><div class="field">
+<div class="field">
+  <label for="pDeliveryCharges">Delivery Charges (₹) *</label>
+  <input
+    id="pDeliveryCharges"
+    type="number"
+    min="0"
+    step="0.01"
+    required
+    placeholder="Enter delivery charges"
+  >
+</div> </div><div class="field"><label for="pCategory">Category *</label><input id="pCategory" required maxlength="40" placeholder="Craft supplies"></div><div class="field"><label for="pEmoji">Emoji</label><input id="pEmoji" maxlength="8" placeholder="🧵"></div></div>
       <div class="field"><label for="pImage">Product image (optional)</label><div id="imageDropZone" class="dropzone" role="button" tabindex="0" aria-label="Drop a product image or click to choose"><strong>🖼️ Drag and drop an image here</strong><span>or click to choose a file</span><small>JPG, PNG, or WebP · max 8 MB · image is compressed in this browser</small><input id="pImageFile" type="file" accept="image/jpeg,image/png,image/webp" hidden></div><img id="pImagePreview" class="image-preview" alt="Selected product image preview"><input id="pImage" type="hidden"><button id="clearImageBtn" class="btn btn-outline hidden" type="button" style="margin-top:8px">Remove image</button><p class="small-note">Images are uploaded to the shared <code>product-images</code> storage bucket when you save the product. Supabase must be configured first.</p></div>
       <div class="field"><label for="pDescription">Description</label><textarea id="pDescription" maxlength="250"></textarea></div>
       <button class="btn btn-primary" type="submit" id="saveProductBtn">Save product</button> <button class="btn btn-outline hidden" type="button" id="cancelEdit">Cancel edit</button>
