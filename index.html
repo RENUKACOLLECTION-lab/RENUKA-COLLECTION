@@ -113,7 +113,50 @@ body {
     is_active: true
   };
 }
-  async function loadProducts(){if(!db){products=read("renuka_products_v1",defaults);toast("Cloud not configured yet. Follow SETUP.md to connect Supabase.");renderFilters();renderProducts();return}const {data,error}=await db.from("products").select("id,name,price,delivery_charges,category,emoji,image_url,description,is_active").eq("is_active",true).order("created_at",{ascending:true});if(error){console.error(error);toast("Could not load cloud products. Check Supabase setup.");products=defaults.map(p=>({...p}));}else{products=(data||[]).map(fromDb)}renderFilters();renderProducts();renderCart();if(!data?.length&&!error)toast("Cloud database is empty. Add products in Admin or run the seed SQL.")}
+ async function loadProducts() {
+  if (!db) {
+    products = [];
+    console.error("Supabase is not configured.");
+    toast("Supabase connection is unavailable.");
+    renderFilters();
+    renderProducts();
+    renderCart();
+    return false;
+  }
+
+  const { data, error } = await db
+    .from("products")
+    .select(
+      "id,name,price,weight_grams,category,emoji,image_url,description,is_active"
+    )
+    .eq("is_active", true)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error("Supabase product loading error:", error);
+
+    toast("Could not load products: " + error.message);
+
+    // Do not replace cloud products with demo products.
+    return false;
+  }
+
+  products = (data || []).map(fromDb);
+
+  renderFilters();
+  renderProducts();
+  renderCart();
+
+  if (adminUnlocked) {
+    renderAdminProducts();
+  }
+
+  if (!data.length) {
+    toast("No products found in Supabase.");
+  }
+
+  return true;
+}
   async function uploadImageIfNeeded(src,id){if(!src||!src.startsWith("data:image/"))return src||null;if(!db)throw new Error("Configure Supabase before uploading shared product images.");const blob=await (await fetch(src)).blob();const path=`${id}/${Date.now()}.jpg`;const {error}=await db.storage.from("product-images").upload(path,blob,{contentType:"image/jpeg",upsert:false});if(error)throw error;return db.storage.from("product-images").getPublicUrl(path).data.publicUrl}
   function toast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display="none",2800)}
   settings={name:"Renuka Collection",upiId:"",...settings,whatsapp:STORE_WHATSAPP};
