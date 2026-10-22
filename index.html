@@ -110,7 +110,7 @@ body {
   const money=n=>"₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
   const safe=(v)=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const persist=()=>{localStorage.setItem(KEY_CART,JSON.stringify(cart));localStorage.setItem(KEY_SETTINGS,JSON.stringify(settings));localStorage.setItem(KEY_ORDERS,JSON.stringify(orders))};
-function fromDb(row) {   return {     id: row.id,     name: row.name,     price: Number(row.price),     deliveryCharges: Number(row.delivery_charges ?? 0),     category: row.category || "Other",     emoji: row.emoji || "🛍️",     image: row.image_url || "",     description: row.description || ""   }; } {
+function fromDb(row) {
   return {
     id: row.id,
     name: row.name,
