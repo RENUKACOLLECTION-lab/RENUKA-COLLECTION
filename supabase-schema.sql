@@ -56,7 +56,7 @@ drop policy if exists "Admins can delete product images" on storage.objects;
 create policy "Admins can delete product images" on storage.objects for delete to authenticated using (bucket_id = 'product-images' and public.is_store_admin());
 
 -- Optional initial products. Existing rows are not overwritten.
-insert into public.products (id,name,price,weight_grams,category,emoji,description) values
+insert into public.products (id,name,price,delevary_charges,category,emoji,description) values
 ('b7000-25','B-7000 Glue 25 ml',50,35,'Craft Supplies','🧴','Precision craft adhesive for DIY and repair projects.'),
 ('b7000-110','B-7000 Glue 110 ml',100,110,'Craft Supplies','🧴','Larger bottle for bigger crafting projects.'),
 ('glue-gun','Glue Gun',325,250,'Craft Supplies','🛠️','A handy tool for craft and decoration work.'),
