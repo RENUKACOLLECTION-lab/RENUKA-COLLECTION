@@ -16,7 +16,7 @@ create table if not exists public.products (
   id text primary key,
   name text not null check (char_length(name) between 1 and 80),
   price numeric(10,2) not null check (price >= 0),
-  weight_grams integer not null default 1 check (weight_grams between 1 and 35000),
+  delevary_charges integer not null default 1 check (weight_grams between 1 and 35000),
   category text not null check (char_length(category) between 1 and 40),
   emoji text not null default '🛍️',
   image_url text,
