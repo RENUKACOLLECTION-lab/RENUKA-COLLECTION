@@ -148,9 +148,9 @@ function fromDb(row) {
 
   const { data, error } = await db
     .from("products")
-    .select(
-      "id,name,price,weight_grams,category,emoji,image_url,description,is_active"
-    )
+   .select(
+  "id,name,price,delivery_charges,category,emoji,image_url,description,is_active"
+)
     .eq("is_active", true)
     .order("created_at", { ascending: true });
 
