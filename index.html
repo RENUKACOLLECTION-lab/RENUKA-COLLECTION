@@ -100,7 +100,19 @@ body {
   const safe=(v)=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const persist=()=>{localStorage.setItem(KEY_CART,JSON.stringify(cart));localStorage.setItem(KEY_SETTINGS,JSON.stringify(settings));localStorage.setItem(KEY_ORDERS,JSON.stringify(orders))};
   function fromDb(row){return {id:row.id,name:row.name,price:Number(row.price),deliveryCharges: Number(row.weight_grams || 1),category:row.category||"Other",emoji:row.emoji||"🛍️",image:row.image_url||"",description:row.description||""}}
-  function toDb(p){return {id:p.id,name:p.name,price:p.priceweight_grams: p.deliveryCharges,category:p.category,emoji:p.emoji,image_url:p.image||null,description:p.description||"",is_active:true}}
+ function toDb(p) {
+  return {
+    id: p.id,
+    name: p.name,
+    price: p.price,
+    weight_grams: p.deliveryCharges,
+    category: p.category,
+    emoji: p.emoji,
+    image_url: p.image || null,
+    description: p.description || "",
+    is_active: true
+  };
+}
   async function loadProducts(){if(!db){products=read("renuka_products_v1",defaults);toast("Cloud not configured yet. Follow SETUP.md to connect Supabase.");renderFilters();renderProducts();return}const {data,error}=await db.from("products").select("id,name,price,delivery_charges,category,emoji,image_url,description,is_active").eq("is_active",true).order("created_at",{ascending:true});if(error){console.error(error);toast("Could not load cloud products. Check Supabase setup.");products=defaults.map(p=>({...p}));}else{products=(data||[]).map(fromDb)}renderFilters();renderProducts();renderCart();if(!data?.length&&!error)toast("Cloud database is empty. Add products in Admin or run the seed SQL.")}
   async function uploadImageIfNeeded(src,id){if(!src||!src.startsWith("data:image/"))return src||null;if(!db)throw new Error("Configure Supabase before uploading shared product images.");const blob=await (await fetch(src)).blob();const path=`${id}/${Date.now()}.jpg`;const {error}=await db.storage.from("product-images").upload(path,blob,{contentType:"image/jpeg",upsert:false});if(error)throw error;return db.storage.from("product-images").getPublicUrl(path).data.publicUrl}
   function toast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display="none",2800)}
